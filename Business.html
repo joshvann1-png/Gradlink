@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GradLink &mdash; Business Portal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --w:#FFFFFF;--wa:#F7F5F0;--wb:#EFECE5;
+  --b:1px solid #E2DDD5;--bng:1px solid rgba(176,125,26,0.32);
+  --nav:#0D1B2E;--nav2:#162640;
+  --t1:#0D1B2E;--t2:#374151;--t3:#8896A8;
+  --gold:#B07D1A;--gold2:#C99226;--goldf:rgba(176,125,26,0.07);
+  --red:#B03030;--redf:rgba(176,48,48,0.06);
+  --green:#1E7A3C;--greenf:rgba(30,122,60,0.07);
+  --serif:'DM Serif Display',serif;--sans:'DM Sans',sans-serif;--mono:'DM Mono',monospace;
+  --r:4px;--r1:8px;--r2:12px;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html,body{height:100%;-webkit-font-smoothing:antialiased;}
+body{font-family:var(--sans);font-size:14px;line-height:1.6;color:var(--t1);background:var(--wa);overflow-x:hidden;}
+input,textarea,select,button{font-family:var(--sans);}
+a{text-decoration:none;color:inherit;}
+.tp{font-family:var(--serif);font-size:clamp(24px,2.8vw,34px);font-weight:400;line-height:1.05;letter-spacing:-0.02em;color:var(--t1);}
+.tp em{font-style:italic;color:var(--gold);}
+.th3{font-family:var(--serif);font-size:19px;font-weight:400;line-height:1.2;color:var(--t1);}
+.tlbl{font-family:var(--mono);font-size:10px;font-weight:500;letter-spacing:0.13em;text-transform:uppercase;color:var(--t3);}
+.tbody{font-size:14px;line-height:1.65;color:var(--t2);}
+.tsm{font-size:13px;line-height:1.6;color:var(--t2);}
+.tcap{font-family:var(--mono);font-size:11px;letter-spacing:0.06em;color:var(--t3);}
+.tg{color:var(--gold);}
+
+/* SIDEBAR */
+.sb{position:fixed;top:0;left:0;bottom:0;width:218px;background:var(--w);border-right:var(--b);display:flex;flex-direction:column;z-index:50;overflow-y:auto;}
+.sb-top{background:var(--nav);padding:17px 17px 14px;flex-shrink:0;}
+.sb-logo{font-family:var(--serif);font-size:18px;color:#F0EBE0;}.sb-logo span{color:#C99226;}
+.sb-sub{font-family:var(--mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.28);margin-top:2px;}
+.sb-co{display:flex;align-items:center;gap:10px;padding:11px 14px;border-bottom:var(--b);background:var(--wa);}
+.sb-co-logo{width:32px;height:32px;background:var(--nav);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:12px;color:#C99226;flex-shrink:0;}
+.sb-co-name{font-size:13px;font-weight:500;color:var(--t1);}.sb-co-plan{font-family:var(--mono);font-size:9px;letter-spacing:0.06em;color:var(--gold);margin-top:1px;}
+.sb-nav{flex:1;padding:10px 8px;}
+.sb-grp{font-family:var(--mono);font-size:9px;letter-spacing:0.14em;text-transform:uppercase;color:var(--t3);padding:0 8px;margin:12px 0 5px;}
+.sb-grp:first-child{margin-top:0;}
+.sb-btn{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:var(--r);border:none;background:transparent;color:var(--t3);font-size:13px;cursor:pointer;width:100%;text-align:left;transition:all 0.13s;margin-bottom:1px;}
+.sb-btn:hover{background:var(--wa);color:var(--t1);}
+.sb-btn.on{background:var(--nav);color:#F0EBE0;}
+.sb-btn svg{width:14px;height:14px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;flex-shrink:0;}
+.sb-badge{margin-left:auto;background:var(--gold);color:#FFF;font-family:var(--mono);font-size:9px;padding:2px 5px;border-radius:2px;}
+.sb-foot{padding:11px;border-top:var(--b);}
+.commit-box{background:var(--goldf);border:var(--bng);border-radius:var(--r1);padding:12px;}
+.cb-lbl{font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--gold);margin-bottom:5px;display:block;}
+.cb-num{font-family:var(--serif);font-size:21px;color:var(--t1);line-height:1;margin-bottom:5px;}
+.cb-t{height:3px;background:var(--wb);margin-bottom:5px;}.cb-f{height:100%;background:var(--gold);width:64%;}
+.cb-sub{font-size:11px;color:var(--t3);}
+
+/* MAIN */
+.main{margin-left:218px;min-height:100vh;background:var(--wa);}
+.inn{padding:26px 30px;max-width:1020px;}
+.pg{display:none;}.pg.on{display:block;}
+.tb{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-bottom:22px;flex-wrap:wrap;}
+.tb-eye{font-family:var(--mono);font-size:10px;letter-spacing:0.13em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:6px;}
+.tb-act{display:flex;align-items:center;gap:7px;padding-top:3px;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:6px;font-family:var(--sans);font-size:13px;font-weight:500;border-radius:var(--r);padding:8px 17px;border:var(--b);cursor:pointer;transition:all 0.14s;white-space:nowrap;}
+.btn:hover{transform:translateY(-1px);}
+.btn svg{width:13px;height:13px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+.btn-gold{background:var(--gold);color:#FFF;border-color:var(--gold);}
+.btn-gold:hover{background:var(--gold2);border-color:var(--gold2);}
+.btn-navy{background:var(--nav);color:#F0EBE0;border-color:var(--nav);}
+.btn-navy:hover{background:var(--nav2);}
+.btn-out{background:transparent;color:var(--t1);border:var(--b);}
+.btn-out:hover{border:var(--bng);color:var(--gold);}
+.btn-red{background:transparent;color:var(--red);border:1px solid rgba(176,48,48,0.3);}
+.btn-red:hover{background:var(--redf);}
+.btn-green{background:var(--green);color:#FFF;border-color:var(--green);}
+.btn-sm{padding:6px 13px;font-size:12px;}
+.btn-lg{padding:11px 24px;font-size:14px;}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;}
+
+/* CARD */
+.card{background:var(--w);border:var(--b);border-radius:var(--r2);padding:20px;}
+.card-lbl{font-family:var(--mono);font-size:10px;letter-spacing:0.13em;text-transform:uppercase;color:var(--gold);margin-bottom:13px;display:flex;align-items:center;justify-content:space-between;}
+
+/* STAT MINI */
+.sm{background:var(--w);border:var(--b);border-radius:var(--r1);padding:15px 17px;}
+.sm-n{font-family:var(--serif);font-size:28px;color:var(--t1);line-height:1;margin-bottom:4px;}
+.sm-l{font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);}
+
+/* PROGRESS */
+.pr{margin-bottom:12px;}
+.pr-row{display:flex;justify-content:space-between;margin-bottom:5px;}
+.pr-lbl{font-size:13px;color:var(--t2);}.pr-val{font-family:var(--mono);font-size:10px;letter-spacing:0.06em;color:var(--gold);}
+.pr-t{height:3px;background:var(--wb);overflow:hidden;}
+.pr-f{height:100%;background:var(--gold);}
+
+/* COMPANY HERO */
+.co-hd{background:var(--nav);border-radius:var(--r2);padding:22px;margin-bottom:16px;position:relative;overflow:hidden;}
+.co-hd::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(176,125,26,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(176,125,26,0.06) 1px,transparent 1px);background-size:46px 46px;}
+.co-in{display:flex;align-items:flex-start;gap:18px;position:relative;z-index:1;}
+.co-logo{width:60px;height:60px;background:#C99226;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:22px;color:var(--nav);flex-shrink:0;}
+.co-name{font-family:var(--serif);font-size:22px;color:#F0EBE0;margin-bottom:3px;line-height:1.1;}
+.co-line{font-size:13px;color:rgba(255,255,255,0.45);margin-bottom:9px;}
+.co-tags{display:flex;gap:5px;flex-wrap:wrap;}
+.co-tag{font-family:var(--mono);font-size:10px;letter-spacing:0.06em;padding:2px 8px;border-radius:var(--r);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.44);}
+.co-tag.g{border-color:rgba(176,125,26,0.45);color:#C99226;}
+.co-stats{display:flex;gap:18px;margin-left:auto;align-items:flex-start;flex-shrink:0;}
+.co-sn{font-family:var(--serif);font-size:28px;color:#C99226;line-height:1;margin-bottom:3px;text-align:center;}
+.co-sl{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:rgba(255,255,255,0.28);text-align:center;}
+
+/* ACTIVITY */
+.act{display:flex;align-items:flex-start;gap:10px;padding:9px 12px;border:var(--b);border-radius:var(--r);background:var(--wa);transition:border-color 0.13s;margin-bottom:2px;}
+.act:hover{border:var(--bng);}
+.act-ic{width:26px;height:26px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.act-ic svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round;}
+.ic-g{background:var(--goldf);color:var(--gold);}
+.ic-n{background:rgba(13,27,46,0.07);color:var(--nav);}
+.ic-gr{background:rgba(30,122,60,0.07);color:var(--green);}
+.act-t{flex:1;}
+.act-title{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:1px;}
+.act-sub{font-size:12px;color:var(--t3);}
+.act-time{font-family:var(--mono);font-size:10px;color:var(--t3);flex-shrink:0;}
+
+/* CANDIDATE CARD */
+.cc{background:var(--w);border:var(--b);border-radius:var(--r2);padding:18px 20px;display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:start;transition:border-color 0.14s,box-shadow 0.14s;cursor:pointer;margin-bottom:7px;}
+.cc:hover{border:var(--bng);box-shadow:0 3px 12px rgba(13,27,46,0.06);}
+.cc-av{width:42px;height:42px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:16px;flex-shrink:0;}
+.av-b{background:rgba(13,27,46,0.08);color:var(--nav);}
+.av-g{background:rgba(30,100,30,0.08);color:#2A6A2A;}
+.av-a{background:rgba(150,90,10,0.08);color:#8B5A10;}
+.av-p{background:rgba(80,40,120,0.08);color:#5B3B8A;}
+.cc-name{font-family:var(--serif);font-size:17px;color:var(--t1);margin-bottom:3px;line-height:1.2;}
+.cc-sub{font-family:var(--mono);font-size:10px;letter-spacing:0.04em;color:var(--t3);margin-bottom:8px;}
+.cc-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:8px;}
+.cc-chip{font-family:var(--mono);font-size:10px;letter-spacing:0.05em;padding:2px 8px;border:var(--b);border-radius:var(--r);color:var(--t3);}
+.cc-chip.hl{border:var(--bng);color:var(--gold);background:var(--goldf);}
+.cc-sks{display:flex;gap:5px;flex-wrap:wrap;}
+.cc-sk{font-family:var(--mono);font-size:10px;letter-spacing:0.04em;padding:2px 7px;border:var(--b);border-radius:var(--r);color:var(--t3);}
+.cc-r{display:flex;flex-direction:column;align-items:flex-end;gap:7px;min-width:90px;}
+.cc-gpa{font-family:var(--serif);font-size:32px;color:var(--gold);line-height:1;}
+.cc-gpal{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);text-align:right;}
+.cc-acts{display:flex;gap:5px;}
+
+/* FILTER PANEL */
+.fpanel{background:var(--w);border:var(--b);border-radius:var(--r2);padding:18px 20px;margin-bottom:16px;}
+.fpanel-t{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);margin-bottom:12px;}
+.fg{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;}
+.ff{display:flex;flex-direction:column;gap:5px;}
+.ff label{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);}
+.ff input,.ff select{background:var(--wa);border:var(--b);border-radius:var(--r);padding:8px 11px;font-size:13px;color:var(--t1);outline:none;transition:border-color 0.13s;}
+.ff input::placeholder{color:var(--t3);}
+.ff input:focus,.ff select:focus{border:var(--bng);}
+.ff select{cursor:pointer;appearance:none;padding-right:24px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%238896A8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;}
+.af{display:flex;flex-wrap:wrap;gap:6px;margin-top:11px;}
+.afc{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:10px;letter-spacing:0.04em;padding:3px 9px;border:var(--bng);border-radius:var(--r);color:var(--gold);background:var(--goldf);}
+.afc .x{cursor:pointer;font-size:10px;}
+.rh{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+.rc{font-family:var(--serif);font-size:18px;color:var(--t1);}
+.rc span{font-family:var(--mono);font-size:10px;letter-spacing:0.04em;color:var(--t3);}
+.rs{font-family:var(--mono);font-size:11px;letter-spacing:0.05em;color:var(--t3);border:var(--b);padding:5px 11px;border-radius:var(--r);}
+
+/* SHORTLIST */
+.sl-g{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;}
+.sl-c{background:var(--w);border:var(--b);border-radius:var(--r1);padding:12px;display:flex;align-items:center;gap:9px;transition:border-color 0.13s;}
+.sl-c:hover{border:var(--bng);}
+.sl-av{width:30px;height:30px;border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:12px;flex-shrink:0;}
+.sl-nm{font-size:13px;font-weight:500;color:var(--t1);}
+.sl-mt{font-family:var(--mono);font-size:10px;letter-spacing:0.04em;color:var(--t3);margin-top:1px;}
+.sl-gpa{font-family:var(--serif);font-size:17px;color:var(--gold);margin-left:auto;flex-shrink:0;}
+
+/* POST FORM STEPS */
+.pf-steps{display:flex;border-bottom:var(--b);margin-bottom:20px;overflow-x:auto;}
+.pf-st{display:flex;align-items:center;gap:7px;padding:8px 13px;font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;white-space:nowrap;transition:all 0.14s;}
+.pf-st.done{color:var(--gold);border-color:var(--gold);}
+.pf-st.on{color:var(--nav);border-color:var(--nav);}
+.pf-sn{width:16px;height:16px;border-radius:50%;border:1px solid currentColor;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;}
+.pf-st.done .pf-sn{background:var(--gold);border-color:var(--gold);color:#FFF;}
+.pf-st.on .pf-sn{background:var(--nav);border-color:var(--nav);color:#FFF;}
+.pf-panel{display:none;}.pf-panel.on{display:block;}
+.pf-nav{display:flex;justify-content:space-between;margin-top:20px;padding-top:16px;border-top:var(--b);}
+
+/* FORMS */
+.fsec{margin-bottom:20px;}
+.fsec-ttl{font-family:var(--serif);font-size:18px;color:var(--t1);margin-bottom:4px;}
+.fsec-desc{font-size:13px;color:var(--t2);margin-bottom:15px;}
+.fdiv{height:1px;background:#E2DDD5;margin:20px 0;}
+.field{margin-bottom:12px;}
+.field label{font-family:var(--mono);font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--t3);display:block;margin-bottom:5px;}
+.field input,.field textarea,.field select{width:100%;background:var(--wa);border:var(--b);border-radius:var(--r);padding:9px 12px;font-size:14px;color:var(--t1);outline:none;transition:border-color 0.13s;}
+.field input:focus,.field textarea:focus,.field select:focus{border:var(--bng);}
+.field input::placeholder,.field textarea::placeholder{color:var(--t3);}
+.field textarea{resize:vertical;min-height:84px;}
+.field select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='11' viewBox='0 0 24 24' fill='none' stroke='%238896A8' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px;}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.fr3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+
+/* TAG PICKER */
+.tp{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px;}
+.tp-t{font-family:var(--mono);font-size:10px;letter-spacing:0.06em;padding:3px 9px;border:var(--b);border-radius:var(--r);color:var(--t3);cursor:pointer;transition:all 0.12s;background:transparent;}
+.tp-t:hover{border:var(--bng);color:var(--gold);}
+.tp-t.on{border:var(--bng);color:var(--gold);background:var(--goldf);}
+
+/* JOB LISTING CARD */
+.jp{background:var(--w);border:var(--b);border-radius:var(--r2);padding:18px 20px;display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;transition:border-color 0.13s;margin-bottom:7px;}
+.jp:hover{border:var(--bng);}
+.jp-ttl{font-family:var(--serif);font-size:17px;color:var(--t1);margin-bottom:3px;}
+.jp-mt{font-family:var(--mono);font-size:10px;letter-spacing:0.04em;color:var(--t3);margin-bottom:8px;}
+.jp-chips{display:flex;gap:5px;flex-wrap:wrap;}
+.jp-chip{font-family:var(--mono);font-size:10px;letter-spacing:0.06em;padding:2px 8px;border:var(--b);border-radius:var(--r);color:var(--t3);}
+.jp-chip.live{border-color:rgba(30,122,60,0.35);color:var(--green);background:var(--greenf);}
+.jp-acts{display:flex;gap:5px;margin-top:9px;}
+.jp-stats{display:flex;gap:14px;align-items:center;flex-shrink:0;}
+.jp-sn{font-family:var(--serif);font-size:24px;color:var(--t1);line-height:1;}
+.jp-sl{font-family:var(--mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);}
+
+/* MESSAGES */
+.msg-item{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border:var(--b);border-radius:var(--r1);background:var(--w);cursor:pointer;transition:border-color 0.13s;margin-bottom:2px;}
+.msg-item:hover{border:var(--bng);}
+.msg-item.unread{border-left:3px solid var(--gold);}
+.msg-av{width:33px;height:33px;background:var(--nav);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:12px;color:#C99226;flex-shrink:0;}
+.msg-nm{font-size:13px;font-weight:500;color:var(--t1);margin-bottom:2px;}
+.msg-prev{font-size:12px;color:var(--t3);}
+.msg-time{font-family:var(--mono);font-size:10px;color:var(--t3);flex-shrink:0;}
+.msg-dot{width:6px;height:6px;background:var(--gold);border-radius:50%;flex-shrink:0;margin-top:4px;}
+
+/* NOTE BOX */
+.note{padding:11px 14px;background:var(--goldf);border:var(--bng);border-radius:var(--r1);}
+.note .tlbl{color:var(--gold);margin-bottom:4px;display:block;}
+
+/* JOB DESCRIPTION PREVIEW (1-pager) */
+.jd-preview{background:var(--w);border:var(--b);border-radius:var(--r2);max-width:780px;margin:0 auto;}
+.jd-header{background:var(--nav);padding:26px 30px;border-radius:var(--r2) var(--r2) 0 0;position:relative;overflow:hidden;}
+.jd-header::before{content:'';position:absolute;inset:0;background-image:linear-gradient(rgba(176,125,26,0.06) 1px,transparent 1px),linear-gradient(90deg,rgba(176,125,26,0.06) 1px,transparent 1px);background-size:44px 44px;}
+.jd-hdr-in{position:relative;z-index:1;display:flex;align-items:flex-start;gap:18px;}
+.jd-co-logo{width:54px;height:54px;background:#C99226;border-radius:var(--r1);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:20px;color:var(--nav);flex-shrink:0;}
+.jd-title{font-family:var(--serif);font-size:24px;color:#F0EBE0;margin-bottom:3px;line-height:1.1;}
+.jd-company{font-family:var(--mono);font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:10px;}
+.jd-chips{display:flex;flex-wrap:wrap;gap:6px;}
+.jd-chip{font-family:var(--mono);font-size:10px;letter-spacing:0.06em;padding:2px 9px;border-radius:var(--r);border:1px solid rgba(255,255,255,0.12);color:rgba(255,255,255,0.5);}
+.jd-chip.hl{border-color:rgba(176,125,26,0.45);color:#C99226;}
+.jd-body{padding:26px 30px;}
+.jd-section{margin-bottom:22px;padding-bottom:22px;border-bottom:var(--b);}
+.jd-section:last-child{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+.jd-sec-label{font-family:var(--mono);font-size:10px;letter-spacing:0.13em;text-transform:uppercase;color:var(--gold);margin-bottom:11px;display:block;}
+.jd-two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.jd-info-row{display:flex;gap:10px;padding:6px 0;border-bottom:var(--b);}
+.jd-info-row:last-child{border-bottom:none;}
+.jd-info-lbl{font-family:var(--mono);font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--t3);min-width:90px;padding-top:1px;}
+.jd-info-val{font-size:13px;color:var(--t1);}
+.jd-skills-wrap{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px;}
+.jd-skill{font-family:var(--mono);font-size:10px;letter-spacing:0.06em;padding:3px 9px;border:var(--bng);border-radius:var(--r);background:var(--goldf);color:var(--gold);}
+.jd-print-bar{display:flex;align-items:center;justify-content:space-between;padding:13px 30px;border-top:var(--b);background:var(--wa);border-radius:0 0 var(--r2) var(--r2);}
+.jd-gl-brand{font-family:var(--serif);font-size:14px;color:var(--t1);}
+.jd-gl-brand span{color:var(--gold);}
+
+/* TOAST */
+.toast{position:fixed;bottom:24px;right:24px;background:var(--nav);border:var(--bng);border-radius:var(--r1);padding:12px 18px;display:flex;align-items:center;gap:9px;font-size:13px;color:#F0EBE0;z-index:999;transform:translateY(56px);opacity:0;transition:all 0.26s;pointer-events:none;}
+.toast.on{transform:translateY(0);opacity:1;}
+.tdot{width:6px;height:6px;background:var(--gold);border-radius:50%;flex-shrink:0;}
+
+@media(max-width:860px){
+  .sb{position:relative;width:100%;border-right:none;border-bottom:var(--b);}
+  .main{margin-left:0;}.inn{padding:16px;}
+  .g4{grid-template-columns:1fr 1fr;}
+  .g3,.fr2,.fr3,.fg,.jd-two-col{grid-template-columns:1fr;}
+  .cc,.jp{grid-template-columns:1fr;}
+  .co-in{flex-direction:column;}
+  .co-stats{margin-left:0;}
+  .sl-g{grid-template-columns:1fr 1fr;}
+}
+@media(max-width:520px){.g4{grid-template-columns:1fr;}}
+</style>
+</head><body>
+<svg style="display:none">
+  <symbol id="s-home"   viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+  <symbol id="s-build"  viewBox="0 0 24 24"><rect x="3" y="2" width="18" height="20"/><path d="M9 22V12h6v10"/><line x1="9" y1="6" x2="9" y2="6.01"/><line x1="15" y1="6" x2="15" y2="6.01"/><line x1="9" y1="10" x2="9" y2="10.01"/></symbol>
+  <symbol id="s-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></symbol>
+  <symbol id="s-star"   viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></symbol>
+  <symbol id="s-post"   viewBox="0 0 24 24"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></symbol>
+  <symbol id="s-brief"  viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16"/></symbol>
+  <symbol id="s-msg"    viewBox="0 0 24 24"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></symbol>
+  <symbol id="s-chart"  viewBox="0 0 24 24"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></symbol>
+  <symbol id="s-check"  viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></symbol>
+  <symbol id="s-arrow"  viewBox="0 0 24 24"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></symbol>
+  <symbol id="s-plus"   viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+  <symbol id="s-eye"    viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></symbol>
+  <symbol id="s-edit"   viewBox="0 0 24 24"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></symbol>
+  <symbol id="s-trash"  viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6"/><path d="M10 11v6m4-6v6"/><path d="M9 6V4a1 1 0 011-1h4a1 1 0 011 1v2"/></symbol>
+  <symbol id="s-eye2"   viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></symbol>
+  <symbol id="s-print"  viewBox="0 0 24 24"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></symbol>
+</svg>
+<div class="toast" id="toast"><div class="tdot"></div><span id="tmsg"></span></div>
+
+<aside class="sb">
+  <div class="sb-top"><div class="sb-logo">Grad<span>Link</span></div><div class="sb-sub">Business Portal</div></div>
+  <div class="sb-co">
+    <div class="sb-co-logo" id="sb-co-init">D</div>
+    <div><div class="sb-co-name" id="sb-co-name">Deloitte SA</div><div class="sb-co-plan">Scout Pro</div></div>
+  </div>
+  <nav class="sb-nav">
+    <div class="sb-grp">Overview</div>
+    <button class="sb-btn on" data-page="dashboard"><svg><use href="#s-home"/></svg>Dashboard</button>
+    <button class="sb-btn" data-page="profile"><svg><use href="#s-build"/></svg>Company Profile</button>
+    <div class="sb-grp">Recruiting</div>
+    <button class="sb-btn" data-page="search"><svg><use href="#s-search"/></svg>Search Students</button>
+    <button class="sb-btn" data-page="shortlist"><svg><use href="#s-star"/></svg>Shortlists<span class="sb-badge">12</span></button>
+    <div class="sb-grp">Opportunities</div>
+    <button class="sb-btn" data-page="post"><svg><use href="#s-post"/></svg>Post a Job</button>
+    <button class="sb-btn" data-page="listings"><svg><use href="#s-brief"/></svg>My Listings</button>
+    <button class="sb-btn" data-page="jd-preview" id="sb-jd-btn" style="display:none"><svg><use href="#s-eye"/></svg>Job Preview</button>
+    <div class="sb-grp">Communications</div>
+    <button class="sb-btn" data-page="messages"><svg><use href="#s-msg"/></svg>Messages<span class="sb-badge">2</span></button>
+    <button class="sb-btn" data-page="analytics"><svg><use href="#s-chart"/></svg>Analytics</button>
+  </nav>
+  <div class="sb-foot">
+    <div class="commit-box">
+      <span class="cb-lbl">5% Workforce Goal</span>
+      <div class="cb-num">3.2%</div>
+      <div class="cb-t"><div class="cb-f"></div></div>
+      <div class="cb-sub">8 of 12 target roles filled</div>
+    </div>
+  </div>
+</aside>
+
+<div class="main"><div class="inn">
+
+<!-- DASHBOARD -->
+<section class="pg on" id="pg-dashboard">
+  <div class="tb"><div><span class="tb-eye">Business Portal</span><h1 class="tp">Scout <em>Dashboard</em></h1></div><div class="tb-act"><button class="btn btn-out btn-sm">Notifications</button><button class="btn btn-gold btn-sm" onclick="nav('post')"><svg><use href="#s-plus"/></svg>Post New Job</button></div></div>
+  <div class="co-hd"><div class="co-in">
+    <div class="co-logo" id="dash-co-init">D</div>
+    <div style="flex:1">
+      <div class="co-name" id="dash-co-name">Deloitte South Africa</div>
+      <div class="co-line" id="dash-co-industry">Advisory &amp; Technology Consulting</div>
+      <div class="co-tags"><span class="co-tag g">Scout Pro</span><span class="co-tag g">5% Committed</span><span class="co-tag" id="dash-co-loc">Johannesburg</span><span class="co-tag">1,200+ Employees</span></div>
+    </div>
+    <div class="co-stats"><div style="text-align:center"><div class="co-sn">4</div><div class="co-sl">Active Jobs</div></div><div style="text-align:center"><div class="co-sn">12</div><div class="co-sl">Shortlisted</div></div><div style="text-align:center"><div class="co-sn">3</div><div class="co-sl">Hired</div></div></div>
+  </div></div>
+  <div class="g4" style="margin-bottom:14px">
+    <div class="sm"><div class="sm-n tg">247</div><div class="sm-l">Profile Views This Week</div></div>
+    <div class="sm"><div class="sm-n">12</div><div class="sm-l">Candidates Shortlisted</div></div>
+    <div class="sm"><div class="sm-n">4</div><div class="sm-l">Active Listings</div></div>
+    <div class="sm"><div class="sm-n tg">3</div><div class="sm-l">Hires This Quarter</div></div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="card-lbl">Recent Activity</div>
+      <div class="act"><div class="act-ic ic-g"><svg><use href="#s-eye2"/></svg></div><div class="act-t"><div class="act-title">New match &mdash; Lerato Mokoena</div><div class="act-sub">BSc CS &middot; UCT &middot; 82.4% GPA</div></div><div class="act-time">1h ago</div></div>
+      <div class="act"><div class="act-ic ic-n"><svg><use href="#s-brief"/></svg></div><div class="act-t"><div class="act-title">14 new applicants on Data Analytics Intern</div><div class="act-sub">Posted 2 days ago</div></div><div class="act-time">3h ago</div></div>
+      <div class="act"><div class="act-ic ic-gr"><svg><use href="#s-check"/></svg></div><div class="act-t"><div class="act-title">Amahle Nkosi accepted offer</div><div class="act-sub">Graduate Analyst &middot; Cape Town</div></div><div class="act-time">1d ago</div></div>
+      <div class="act"><div class="act-ic ic-n"><svg><use href="#s-msg"/></svg></div><div class="act-t"><div class="act-title">Reply from Thabo Petersen</div><div class="act-sub">Software Developer Intern</div></div><div class="act-time">2d ago</div></div>
+    </div>
+    <div class="card"><div class="card-lbl">Recruitment Pipeline <button class="btn btn-out btn-sm" onclick="nav('search')" style="font-size:11px">Search More</button></div>
+      <div class="pr"><div class="pr-row"><span class="pr-lbl">Data Analytics Intern</span><span class="pr-val">14 applicants</span></div><div class="pr-t"><div class="pr-f" style="width:70%"></div></div></div>
+      <div class="pr"><div class="pr-row"><span class="pr-lbl">Graduate Analyst &mdash; Finance</span><span class="pr-val">22 applicants</span></div><div class="pr-t"><div class="pr-f" style="width:90%"></div></div></div>
+      <div class="pr"><div class="pr-row"><span class="pr-lbl">Software Developer Intern</span><span class="pr-val">8 applicants</span></div><div class="pr-t"><div class="pr-f" style="width:40%;opacity:.7"></div></div></div>
+      <div class="pr"><div class="pr-row"><span class="pr-lbl">UX Research Intern</span><span class="pr-val">5 applicants</span></div><div class="pr-t"><div class="pr-f" style="width:25%;opacity:.5"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPANY PROFILE -->
+<section class="pg" id="pg-profile">
+  <div class="tb"><div><span class="tb-eye">Business Portal</span><h1 class="tp">Company <em>Profile</em></h1></div><div class="tb-act"><button class="btn btn-gold btn-sm" onclick="saveProfile()"><svg><use href="#s-check"/></svg>Save Changes</button></div></div>
+  <div class="card" style="margin-bottom:14px">
+    <div class="fsec"><div class="fsec-ttl">Company Information</div>
+      <div class="fr2"><div class="field"><label>Company Name</label><input id="cp-name" type="text" value="Deloitte South Africa" oninput="updateCompanyHeader()"></div><div class="field"><label>Industry</label><select id="cp-industry" oninput="updateCompanyHeader()"><option selected>Professional Services</option><option>Technology</option><option>Finance &amp; Banking</option><option>Consulting</option><option>Retail</option><option>Healthcare</option></select></div></div>
+      <div class="fr2"><div class="field"><label>Company Size</label><select><option>1&ndash;50</option><option>51&ndash;200</option><option>201&ndash;500</option><option>501&ndash;1,000</option><option selected>1,000+</option></select></div><div class="field"><label>Headquarters</label><input id="cp-hq" type="text" value="Johannesburg, Gauteng" oninput="updateCompanyHeader()"></div></div>
+      <div class="field"><label>Company Description</label><textarea id="cp-desc">Deloitte South Africa is a leading professional services firm providing audit, consulting, financial advisory, risk advisory, and tax services to clients across the region.</textarea></div>
+      <div class="fr2"><div class="field"><label>Company Website</label><input id="cp-web" type="url" value="https://www.deloitte.com/za"></div><div class="field"><label>Student Contact Email</label><input id="cp-email" type="email" value="graduates@deloitte.co.za"></div></div>
+    </div>
+    <div class="fdiv"></div>
+    <div class="fsec"><div class="fsec-ttl">5% Workforce Commitment</div><div class="fsec-desc tsm">Declaring your commitment unlocks premium visibility and a verified trust badge on GradLink.</div>
+      <div class="fr2"><div class="field"><label>Committed Student Positions</label><input type="number" value="12"></div><div class="field"><label>Target Workforce Percentage</label><select><option>1%</option><option>2%</option><option>3%</option><option>4%</option><option selected>5%</option><option>7.5%</option><option>10%</option></select></div></div>
+      <div class="field"><label>Role Types Offered</label><div class="tp"><span class="tp-t on" onclick="this.classList.toggle('on')">Internships</span><span class="tp-t on" onclick="this.classList.toggle('on')">Graduate Programmes</span><span class="tp-t" onclick="this.classList.toggle('on')">Part-time</span><span class="tp-t on" onclick="this.classList.toggle('on')">Vacation Work</span><span class="tp-t" onclick="this.classList.toggle('on')">Junior Full-time</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- SEARCH STUDENTS -->
+<section class="pg" id="pg-search">
+  <div class="tb"><div><span class="tb-eye">Recruiting</span><h1 class="tp">Search <em>Students</em></h1></div><div class="tb-act"><span class="tcap" style="padding-top:3px">50,412 verified students</span></div></div>
+  <div class="fpanel">
+    <div class="fpanel-t">Filter Candidates</div>
+    <div class="fg">
+      <div class="ff"><label>Degree</label><select><option value="">All Degrees</option><option selected>BSc Computer Science</option><option>BSc Data Science</option><option>BCom Finance</option><option>BEng</option></select></div>
+      <div class="ff"><label>University</label><select><option value="">All Universities</option><option>UCT</option><option>Wits</option><option>UP</option><option>Stellenbosch</option><option>UJ</option></select></div>
+      <div class="ff"><label>Year of Study</label><select><option value="">All Years</option><option>Year 1</option><option>Year 2</option><option selected>Year 3</option><option>Year 4</option><option>Honours</option></select></div>
+      <div class="ff"><label>Minimum GPA</label><select><option>50%+</option><option>60%+</option><option selected>70%+</option><option>75%+</option><option>80%+</option><option>85%+</option></select></div>
+      <div class="ff"><label>Location</label><select><option value="">All</option><option selected>Johannesburg</option><option>Cape Town</option><option>Pretoria</option><option>Durban</option></select></div>
+      <div class="ff"><label>Skills</label><input type="text" placeholder="e.g. Python, SQL" value="Python"></div>
+      <div class="ff"><label>Availability</label><select><option value="">Any</option><option selected>Available Now</option><option>Jan 2025</option><option>Jun 2025</option></select></div>
+      <div class="ff"><label>Role Type</label><select><option value="">All</option><option selected>Internship</option><option>Part-time</option><option>Graduate</option></select></div>
+      <div class="ff" style="align-self:end"><button class="btn btn-navy" style="width:100%"><svg><use href="#s-search"/></svg>Search</button></div>
+    </div>
+    <div class="af">
+      <span class="afc">BSc Computer Science <span class="x">&#215;</span></span>
+      <span class="afc">GPA 70%+ <span class="x">&#215;</span></span>
+      <span class="afc">Year 3 <span class="x">&#215;</span></span>
+      <span class="afc">Johannesburg <span class="x">&#215;</span></span>
+      <span class="afc">Python <span class="x">&#215;</span></span>
+    </div>
+  </div>
+  <div class="rh"><div class="rc">Results <span>2,847 matches</span></div><div class="rs">Sort: GPA High&ndash;Low &#9662;</div></div>
+  <div class="cc"><div class="cc-av av-b">LM</div><div><div class="cc-name">Lerato Mokoena</div><div class="cc-sub">BSc Computer Science &middot; Year 3 &middot; University of Cape Town &middot; Johannesburg</div><div class="cc-chips"><span class="cc-chip hl">Top Match</span><span class="cc-chip">Open to Work</span><span class="cc-chip">Part-time</span><span class="cc-chip">Verified</span></div><div class="cc-sks"><span class="cc-sk">Python</span><span class="cc-sk">TensorFlow</span><span class="cc-sk">SQL</span><span class="cc-sk">React</span><span class="cc-sk">Git</span></div></div><div class="cc-r"><div class="cc-gpa">82%</div><div class="cc-gpal">GPA</div><div class="cc-acts"><button class="btn btn-gold btn-sm">Contact</button><button class="btn btn-out btn-sm"><svg><use href="#s-star"/></svg></button></div></div></div>
+  <div class="cc"><div class="cc-av av-a">AN</div><div><div class="cc-name">Amahle Nkosi</div><div class="cc-sub">BSc Data Science &middot; Year 3 &middot; Wits University &middot; Johannesburg</div><div class="cc-chips"><span class="cc-chip">Open to Work</span><span class="cc-chip">Internship</span><span class="cc-chip">Verified</span></div><div class="cc-sks"><span class="cc-sk">R</span><span class="cc-sk">Power BI</span><span class="cc-sk">Python</span><span class="cc-sk">Tableau</span></div></div><div class="cc-r"><div class="cc-gpa">88%</div><div class="cc-gpal">GPA</div><div class="cc-acts"><button class="btn btn-gold btn-sm">Contact</button><button class="btn btn-out btn-sm"><svg><use href="#s-star"/></svg></button></div></div></div>
+  <div class="cc"><div class="cc-av av-g">TP</div><div><div class="cc-name">Thabo Petersen</div><div class="cc-sub">BSc Information Systems &middot; Year 4 &middot; University of Pretoria &middot; Pretoria</div><div class="cc-chips"><span class="cc-chip">Open to Work</span><span class="cc-chip">Part-time</span><span class="cc-chip">Verified</span></div><div class="cc-sks"><span class="cc-sk">SQL</span><span class="cc-sk">Java</span><span class="cc-sk">Spring Boot</span><span class="cc-sk">AWS</span></div></div><div class="cc-r"><div class="cc-gpa">79%</div><div class="cc-gpal">GPA</div><div class="cc-acts"><button class="btn btn-gold btn-sm">Contact</button><button class="btn btn-out btn-sm"><svg><use href="#s-star"/></svg></button></div></div></div>
+  <div class="cc"><div class="cc-av av-p">KD</div><div><div class="cc-name">Kemi Dlamini</div><div class="cc-sub">BCom Computer Science &middot; Year 3 &middot; University of Johannesburg &middot; Johannesburg</div><div class="cc-chips"><span class="cc-chip">Open to Work</span><span class="cc-chip">Internship</span><span class="cc-chip">Verified</span></div><div class="cc-sks"><span class="cc-sk">Python</span><span class="cc-sk">Excel</span><span class="cc-sk">VBA</span></div></div><div class="cc-r"><div class="cc-gpa">76%</div><div class="cc-gpal">GPA</div><div class="cc-acts"><button class="btn btn-gold btn-sm">Contact</button><button class="btn btn-out btn-sm"><svg><use href="#s-star"/></svg></button></div></div></div>
+</section>
+
+<!-- SHORTLISTS -->
+<section class="pg" id="pg-shortlist">
+  <div class="tb"><div><span class="tb-eye">Recruiting</span><h1 class="tp">Saved <em>Shortlists</em></h1></div><div class="tb-act"><button class="btn btn-out btn-sm"><svg><use href="#s-plus"/></svg>New Shortlist</button></div></div>
+  <div class="card">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div><div style="font-family:var(--serif);font-size:17px;color:var(--t1);margin-bottom:3px">Data Analytics Intern Candidates</div><div class="tcap">4 candidates &middot; Created 3 days ago</div></div>
+      <div style="display:flex;gap:7px"><button class="btn btn-gold btn-sm">Message All</button><button class="btn btn-out btn-sm">Edit</button></div>
+    </div>
+    <div class="sl-g">
+      <div class="sl-c"><div class="sl-av av-b">LM</div><div><div class="sl-nm">Lerato Mokoena</div><div class="sl-mt">BSc CS &middot; UCT</div></div><div class="sl-gpa">82%</div></div>
+      <div class="sl-c"><div class="sl-av av-a">AN</div><div><div class="sl-nm">Amahle Nkosi</div><div class="sl-mt">BSc DS &middot; Wits</div></div><div class="sl-gpa">88%</div></div>
+      <div class="sl-c"><div class="sl-av av-g">TP</div><div><div class="sl-nm">Thabo Petersen</div><div class="sl-mt">BSc IS &middot; UP</div></div><div class="sl-gpa">79%</div></div>
+      <div class="sl-c"><div class="sl-av av-p">KD</div><div><div class="sl-nm">Kemi Dlamini</div><div class="sl-mt">BCom CS &middot; UJ</div></div><div class="sl-gpa">76%</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- POST A JOB -->
+<section class="pg" id="pg-post">
+  <div class="tb"><div><span class="tb-eye">Opportunities</span><h1 class="tp">Post a <em>Job</em></h1></div>
+  <div class="tb-act">
+    <button class="btn btn-out btn-sm">Save Draft</button>
+    <button class="btn btn-out btn-sm" id="jd-preview-btn" onclick="nav('jd-preview')" style="display:none"><svg><use href="#s-eye"/></svg>Preview</button>
+    <button class="btn btn-gold btn-sm" onclick="publishJob()"><svg><use href="#s-check"/></svg>Publish Listing</button>
+  </div></div>
+  <div class="pf-steps">
+    <div class="pf-st on"  onclick="pfgo(1)"><div class="pf-sn">1</div>Job Details</div>
+    <div class="pf-st"     onclick="pfgo(2)"><div class="pf-sn">2</div>Requirements</div>
+    <div class="pf-st"     onclick="pfgo(3)"><div class="pf-sn">3</div>Compensation</div>
+    <div class="pf-st"     onclick="pfgo(4)"><div class="pf-sn">4</div>Review &amp; Publish</div>
+  </div>
+
+  <!-- Step 1 -->
+  <div class="pf-panel on card" id="pf1">
+    <div class="fsec"><div class="fsec-ttl">Job Details</div><div class="fsec-desc tsm">Tell students what this opportunity is about. Detailed listings attract better-matched candidates.</div>
+      <div class="fr2"><div class="field"><label>Job Title</label><input id="jf-title" type="text" placeholder="e.g. Data Analytics Intern" oninput="liveUpdateJD()"></div><div class="field"><label>Department</label><input id="jf-dept" type="text" placeholder="e.g. Analytics &amp; Cognitive"></div></div>
+      <div class="fr3"><div class="field"><label>Role Type</label><select id="jf-type" oninput="liveUpdateJD()"><option>Internship</option><option>Part-time</option><option>Graduate Programme</option><option>Vacation Work</option></select></div><div class="field"><label>Duration</label><select id="jf-dur"><option>3 Months</option><option selected>6 Months</option><option>12 Months</option><option>Ongoing</option></select></div><div class="field"><label>Location</label><select id="jf-loc" oninput="liveUpdateJD()"><option>Johannesburg</option><option>Cape Town</option><option>Pretoria</option><option>Durban</option><option>Remote</option><option>Hybrid</option></select></div></div>
+      <div class="field"><label>Job Description</label><textarea id="jf-desc" style="min-height:120px" placeholder="Describe the role, day-to-day responsibilities, the team, and what the student will learn and achieve..." oninput="liveUpdateJD()"></textarea></div>
+    </div>
+    <div class="pf-nav"><span></span><button class="btn btn-gold" onclick="pfgo(2)">Next: Requirements <svg><use href="#s-arrow"/></svg></button></div>
+  </div>
+
+  <!-- Step 2 -->
+  <div class="pf-panel card" id="pf2">
+    <div class="fsec"><div class="fsec-ttl">Candidate Requirements</div><div class="fsec-desc tsm">Set the academic and skills criteria. GradLink uses these to surface your listing to the right verified students.</div>
+      <div class="fr2"><div class="field"><label>Required Degree(s)</label><input id="jf-degreereq" type="text" value="BSc Computer Science, BSc Data Science" oninput="liveUpdateJD()"></div><div class="field"><label>Field / Faculty</label><input type="text" value="Science"></div></div>
+      <div class="fr3"><div class="field"><label>Minimum GPA</label><select id="jf-gpa" oninput="liveUpdateJD()"><option>No minimum</option><option>60%+</option><option selected>70%+</option><option>75%+</option><option>80%+</option></select></div><div class="field"><label>Year of Study</label><select id="jf-year"><option>Any</option><option selected>Year 3+</option><option>Final Year only</option><option>Honours+</option></select></div><div class="field"><label>Preferred University</label><select><option selected>Any Accredited</option><option>UCT</option><option>Wits</option><option>UP</option></select></div></div>
+      <div class="field"><label>Required Skills</label><div class="tp" id="skill-picker"><span class="tp-t on" onclick="this.classList.toggle('on')">Python</span><span class="tp-t on" onclick="this.classList.toggle('on')">SQL</span><span class="tp-t" onclick="this.classList.toggle('on')">R</span><span class="tp-t on" onclick="this.classList.toggle('on')">Power BI</span><span class="tp-t" onclick="this.classList.toggle('on')">Tableau</span><span class="tp-t" onclick="this.classList.toggle('on')">Excel</span><span class="tp-t" onclick="this.classList.toggle('on')">TensorFlow</span><span class="tp-t" onclick="this.classList.toggle('on')">Java</span><span class="tp-t" onclick="this.classList.toggle('on')">React</span><span class="tp-t" onclick="this.classList.toggle('on')">Git</span><span class="tp-t" onclick="this.classList.toggle('on')">AWS</span></div></div>
+      <div class="field"><label>Additional Requirements</label><textarea placeholder="Any other requirements, e.g. own transport, driver&apos;s licence, specific certifications..."></textarea></div>
+    </div>
+    <div class="pf-nav"><button class="btn btn-out" onclick="pfgo(1)">Back</button><button class="btn btn-gold" onclick="pfgo(3)">Next: Compensation <svg><use href="#s-arrow"/></svg></button></div>
+  </div>
+
+  <!-- Step 3 -->
+  <div class="pf-panel card" id="pf3">
+    <div class="fsec"><div class="fsec-ttl">Compensation &amp; Benefits</div><div class="fsec-desc tsm">Listings that include compensation details receive significantly more qualified applicants.</div>
+      <div class="fr2"><div class="field"><label>Monthly Stipend / Salary</label><input id="jf-salary" type="text" value="R12,000" oninput="liveUpdateJD()"></div><div class="field"><label>Pay Structure</label><select><option selected>Monthly Stipend</option><option>Hourly Rate</option><option>Annual Salary</option><option>Unpaid (Academic Credit)</option></select></div></div>
+      <div class="fr2"><div class="field"><label>Hours Per Week</label><select id="jf-hours"><option>Up to 10 hours</option><option>10&ndash;20 hours</option><option selected>20&ndash;30 hours</option><option>40 hours (Full-time)</option></select></div><div class="field"><label>Start Date</label><input id="jf-start" type="date" value="2025-02-01"></div></div>
+      <div class="field"><label>Benefits &amp; Perks</label><div class="tp" id="benefits-picker"><span class="tp-t on" onclick="this.classList.toggle('on')">Mentorship Programme</span><span class="tp-t on" onclick="this.classList.toggle('on')">Hybrid Work</span><span class="tp-t" onclick="this.classList.toggle('on')">Travel Allowance</span><span class="tp-t on" onclick="this.classList.toggle('on')">Professional Development</span><span class="tp-t on" onclick="this.classList.toggle('on')">Exposure to Real Clients</span></div></div>
+      <div class="field"><label>Application Closing Date</label><input id="jf-close" type="date" value="2025-01-15"></div>
+    </div>
+    <div class="pf-nav"><button class="btn btn-out" onclick="pfgo(2)">Back</button><button class="btn btn-gold" onclick="pfgo(4)">Review &amp; Publish <svg><use href="#s-arrow"/></svg></button></div>
+  </div>
+
+  <!-- Step 4: Review -->
+  <div class="pf-panel card" id="pf4">
+    <div class="fsec"><div class="fsec-ttl">Review Your Listing</div><div class="fsec-desc tsm">Check everything before publishing. Your listing is visible to all matching verified students immediately upon publishing.</div>
+      <div style="background:var(--wa);border:var(--b);border-radius:var(--r2);padding:20px;margin-bottom:16px">
+        <div style="display:flex;align-items:flex-start;gap:14px;margin-bottom:16px;padding-bottom:16px;border-bottom:var(--b)">
+          <div style="width:42px;height:42px;background:var(--nav);border-radius:var(--r);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:15px;color:#C99226;flex-shrink:0" id="review-co-init">D</div>
+          <div>
+            <div class="tcap" style="margin-bottom:4px" id="review-co-name">Deloitte South Africa</div>
+            <div style="font-family:var(--serif);font-size:19px;color:var(--t1);margin-bottom:7px" id="review-title">Job Title</div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap" id="review-chips"></div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+          <div><div class="tlbl" style="margin-bottom:6px">Requirements</div><p class="tsm" id="review-reqs">--</p></div>
+          <div><div class="tlbl" style="margin-bottom:4px">Estimated Reach</div><div style="font-family:var(--serif);font-size:26px;color:var(--gold)">2,847</div><div class="tsm">matching verified students</div></div>
+        </div>
+      </div>
+      <div class="note"><span class="tlbl">Before You Publish</span><p class="tsm">Your listing is immediately visible to all verified GradLink students matching your criteria. Students apply directly and you receive dashboard notifications. All applicants have confirmed academic records.</p></div>
+    </div>
+    <div class="pf-nav"><button class="btn btn-out" onclick="pfgo(3)">Back</button><button class="btn btn-gold btn-lg" onclick="publishJob()">Publish Listing <svg><use href="#s-check"/></svg></button></div>
+  </div>
+</section>
+
+<!-- JOB DESCRIPTION PREVIEW (1-pager) -->
+<section class="pg" id="pg-jd-preview">
+  <div class="tb">
+    <div><span class="tb-eye">Opportunities</span><h1 class="tp">Job <em>Description</em></h1></div>
+    <div class="tb-act">
+      <button class="btn btn-out btn-sm" onclick="nav('post')"><svg><use href="#s-arrow"/></svg>Edit Listing</button>
+      <button class="btn btn-navy btn-sm" onclick="window.print()"><svg><use href="#s-print"/></svg>Print / Save PDF</button>
+    </div>
+  </div>
+  <div class="jd-preview">
+    <div class="jd-header">
+      <div class="jd-hdr-in">
+        <div class="jd-co-logo" id="jdp-co-init">D</div>
+        <div style="flex:1">
+          <div class="jd-title" id="jdp-title">Data Analytics Intern</div>
+          <div class="jd-company" id="jdp-company">Deloitte South Africa</div>
+          <div class="jd-chips" id="jdp-chips">
+            <span class="jd-chip hl">Internship</span>
+            <span class="jd-chip">Johannesburg</span>
+            <span class="jd-chip">6 Months</span>
+          </div>
+        </div>
+        <div style="text-align:right;position:relative;z-index:1;flex-shrink:0">
+          <div style="font-family:var(--serif);font-size:34px;color:#C99226;line-height:1" id="jdp-salary">R12,000/mo</div>
+          <div style="font-family:var(--mono);font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(255,255,255,0.28)">Monthly Stipend</div>
+        </div>
+      </div>
+    </div>
+    <div class="jd-body">
+      <div class="jd-section">
+        <span class="jd-sec-label">About This Role</span>
+        <p class="tsm" id="jdp-desc">Fill in the job description in step 1 to see it here.</p>
+      </div>
+      <div class="jd-section">
+        <span class="jd-sec-label">Role Details</span>
+        <div class="jd-two-col">
+          <div>
+            <div class="jd-info-row"><span class="jd-info-lbl">Type</span><span class="jd-info-val" id="jdp-type">Internship</span></div>
+            <div class="jd-info-row"><span class="jd-info-lbl">Duration</span><span class="jd-info-val" id="jdp-dur">6 Months</span></div>
+            <div class="jd-info-row"><span class="jd-info-lbl">Location</span><span class="jd-info-val" id="jdp-loc">Johannesburg</span></div>
+            <div class="jd-info-row"><span class="jd-info-lbl">Hours/Week</span><span class="jd-info-val" id="jdp-hours">20&ndash;30 hours</span></div>
+          </div>
+          <div>
+            <div class="jd-info-row"><span class="jd-info-lbl">Salary</span><span class="jd-info-val" id="jdp-salary2" style="color:var(--gold);font-family:var(--serif);font-size:15px">R12,000/mo</span></div>
+            <div class="jd-info-row"><span class="jd-info-lbl">Start Date</span><span class="jd-info-val" id="jdp-start">Feb 2025</span></div>
+            <div class="jd-info-row"><span class="jd-info-lbl">Closes</span><span class="jd-info-val" id="jdp-close">Jan 15, 2025</span></div>
+            <div class="jd-info-row"><span class="jd-info-lbl">Min GPA</span><span class="jd-info-val" id="jdp-gpa">70%+</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="jd-section">
+        <span class="jd-sec-label">Academic Requirements</span>
+        <div class="jd-info-row"><span class="jd-info-lbl">Degree(s)</span><span class="jd-info-val" id="jdp-degrees">BSc Computer Science, BSc Data Science</span></div>
+        <div class="jd-info-row"><span class="jd-info-lbl">Year</span><span class="jd-info-val" id="jdp-year">Year 3+</span></div>
+      </div>
+      <div class="jd-section">
+        <span class="jd-sec-label">Required Skills</span>
+        <div class="jd-skills-wrap" id="jdp-skills">
+          <span class="jd-skill">Python</span><span class="jd-skill">SQL</span><span class="jd-skill">Power BI</span>
+        </div>
+      </div>
+      <div class="jd-section">
+        <span class="jd-sec-label">Benefits &amp; Perks</span>
+        <div class="jd-skills-wrap" id="jdp-benefits">
+          <span class="jd-skill">Mentorship Programme</span><span class="jd-skill">Hybrid Work</span><span class="jd-skill">Professional Development</span>
+        </div>
+      </div>
+      <div class="jd-section">
+        <span class="jd-sec-label">How to Apply</span>
+        <p class="tsm">This opportunity is posted on GradLink. Verified students with matching academic profiles can apply directly through the platform. All applicants are reviewed against the stated academic criteria.</p>
+      </div>
+    </div>
+    <div class="jd-print-bar">
+      <div class="jd-gl-brand">Grad<span>Link</span> &mdash; Verified Opportunity</div>
+      <div class="tcap">gradlink.co.za &middot; Posted 2025</div>
+    </div>
+  </div>
+</section>
+
+<!-- MY LISTINGS -->
+<section class="pg" id="pg-listings">
+  <div class="tb"><div><span class="tb-eye">Opportunities</span><h1 class="tp">My <em>Listings</em></h1></div><div class="tb-act"><button class="btn btn-gold btn-sm" onclick="nav('post')"><svg><use href="#s-plus"/></svg>Post New Job</button></div></div>
+  <div id="listings-container">
+    <div class="jp"><div><div class="jp-ttl">Data Analytics Intern</div><div class="jp-mt">Johannesburg &middot; 6 Months &middot; R12,000/mo &middot; Posted 2 days ago</div><div class="jp-chips"><span class="jp-chip live">Active</span><span class="jp-chip">Internship</span><span class="jp-chip">BSc CS / DS</span><span class="jp-chip">GPA 70%+</span></div><div class="jp-acts"><button class="btn btn-out btn-sm"><svg><use href="#s-edit"/></svg>Edit</button><button class="btn btn-out btn-sm" onclick="nav('jd-preview')"><svg><use href="#s-eye"/></svg>Preview</button><button class="btn btn-red btn-sm">Close</button></div></div><div class="jp-stats"><div style="text-align:center"><div class="jp-sn tg">14</div><div class="jp-sl">Applicants</div></div><div style="text-align:center"><div class="jp-sn">847</div><div class="jp-sl">Views</div></div></div></div>
+    <div class="jp"><div><div class="jp-ttl">Graduate Analyst &mdash; Finance</div><div class="jp-mt">Johannesburg &middot; Graduate Programme &middot; R28,000/mo &middot; Posted 1 week ago</div><div class="jp-chips"><span class="jp-chip live">Active</span><span class="jp-chip">Graduate</span><span class="jp-chip">BCom Finance</span><span class="jp-chip">GPA 75%+</span></div><div class="jp-acts"><button class="btn btn-out btn-sm"><svg><use href="#s-edit"/></svg>Edit</button><button class="btn btn-out btn-sm"><svg><use href="#s-eye"/></svg>Preview</button><button class="btn btn-red btn-sm">Close</button></div></div><div class="jp-stats"><div style="text-align:center"><div class="jp-sn tg">22</div><div class="jp-sl">Applicants</div></div><div style="text-align:center"><div class="jp-sn">1,240</div><div class="jp-sl">Views</div></div></div></div>
+  </div>
+</section>
+
+<!-- MESSAGES -->
+<section class="pg" id="pg-messages">
+  <div class="tb"><div><span class="tb-eye">Communications</span><h1 class="tp">Messages</h1></div></div>
+  <div class="card">
+    <div class="msg-item unread"><div class="msg-av">LM</div><div style="flex:1"><div class="msg-nm">Lerato Mokoena</div><div class="msg-prev">Thank you for reaching out. I am very interested in the Data Analytics Intern position and would love to discuss...</div></div><div class="msg-time">30m ago</div><div class="msg-dot"></div></div>
+    <div class="msg-item unread"><div class="msg-av">TP</div><div style="flex:1"><div class="msg-nm">Thabo Petersen</div><div class="msg-prev">Hi, I would love to discuss the Software Developer Intern opportunity further...</div></div><div class="msg-time">2d ago</div><div class="msg-dot"></div></div>
+    <div class="msg-item"><div class="msg-av">AN</div><div style="flex:1"><div class="msg-nm">Amahle Nkosi</div><div class="msg-prev">I have attached my updated portfolio. Please let me know if you need any additional information...</div></div><div class="msg-time">4d ago</div></div>
+  </div>
+</section>
+
+<!-- ANALYTICS -->
+<section class="pg" id="pg-analytics">
+  <div class="tb"><div><span class="tb-eye">Insights</span><h1 class="tp">Scout <em>Analytics</em></h1></div><div class="tb-act"><button class="btn btn-out btn-sm">Export Report</button></div></div>
+  <div class="g4" style="margin-bottom:14px">
+    <div class="sm"><div class="sm-n tg">847</div><div class="sm-l">Profile Views This Week</div></div>
+    <div class="sm"><div class="sm-n">41</div><div class="sm-l">Total Applications</div></div>
+    <div class="sm"><div class="sm-n">12</div><div class="sm-l">Shortlisted</div></div>
+    <div class="sm"><div class="sm-n tg">3</div><div class="sm-l">Hires This Quarter</div></div>
+  </div>
+  <div class="g2">
+    <div class="card"><div class="card-lbl">Top Performing Listings</div>
+      <div class="pr"><div class="pr-row"><span class="pr-lbl">Graduate Analyst &mdash; Finance</span><span class="pr-val">1,240 views</span></div><div class="pr-t"><div class="pr-f" style="width:100%"></div></div></div>
+      <div class="pr"><div class="pr-row"><span class="pr-lbl">Data Analytics Intern</span><span class="pr-val">847 views</span></div><div class="pr-t"><div class="pr-f" style="width:68%"></div></div></div>
+      <div class="pr"><div class="pr-row"><span class="pr-lbl">UX Research Intern</span><span class="pr-val">312 views</span></div><div class="pr-t"><div class="pr-f" style="width:25%;opacity:.5"></div></div></div>
+    </div>
+    <div class="card"><div class="card-lbl">Applicant GPA Distribution</div>
+      <div class="pr"><div class="pr-row"><span class="pr-lbl">80%+ Distinction</span><span class="pr-val">31%</span></div><div class="pr-t"><div class="pr-f" style="width:31%"></div></div></div>
+      <div class="pr"><div class="pr-row"><span class="pr-lbl">70&ndash;79% Merit</span><span class="pr-val">44%</span></div><div class="pr-t"><div class="pr-f" style="width:44%"></div></div></div>
+      <div class="pr"><div class="pr-row"><span class="pr-lbl">60&ndash;69% Pass</span><span class="pr-val">25%</span></div><div class="pr-t"><div class="pr-f" style="width:25%;opacity:.55"></div></div></div>
+    </div>
+  </div>
+</section>
+
+</div></div>
+<script>
+// ── NAV ──
+function nav(id){document.querySelectorAll('.pg').forEach(p=>p.classList.remove('on'));document.getElementById('pg-'+id).classList.add('on');document.querySelectorAll('.sb-btn').forEach(b=>b.classList.toggle('on',b.dataset.page===id));window.scrollTo(0,0);}
+document.querySelectorAll('.sb-btn').forEach(b=>b.addEventListener('click',()=>nav(b.dataset.page)));
+
+// ── COMPANY PROFILE LIVE UPDATE ──
+function updateCompanyHeader(){
+  var name=document.getElementById('cp-name').value||'Company Name';
+  var industry=document.getElementById('cp-industry').value;
+  var hq=document.getElementById('cp-hq').value;
+  var init=(name.split(' ').map(w=>w[0]).join('').substring(0,2)).toUpperCase();
+  document.getElementById('dash-co-name').textContent=name;
+  document.getElementById('dash-co-industry').textContent=industry;
+  document.getElementById('dash-co-loc').textContent=hq;
+  document.getElementById('sb-co-name').textContent=name.split(' ').slice(0,2).join(' ');
+  document.getElementById('sb-co-init').textContent=init;
+  document.getElementById('dash-co-init').textContent=init;
+  document.getElementById('review-co-init').textContent=init;
+  document.getElementById('review-co-name').textContent=name;
+  document.getElementById('jdp-co-init').textContent=init;
+  document.getElementById('jdp-company').textContent=name;
+}
+function saveProfile(){showToast('Company profile saved');updateCompanyHeader();}
+
+// ── JOB FORM STEPS ──
+function pfgo(n){
+  document.querySelectorAll('.pf-panel').forEach((p,i)=>{p.classList.toggle('on',i+1===n);});
+  document.querySelectorAll('.pf-st').forEach((s,i)=>{s.classList.remove('on','done');if(i+1<n)s.classList.add('done');if(i+1===n)s.classList.add('on');});
+  if(n===4)buildReview();
+}
+
+// ── LIVE JD UPDATE ──
+function liveUpdateJD(){
+  var title=document.getElementById('jf-title').value||'Job Title';
+  var type=document.getElementById('jf-type').value;
+  var loc=document.getElementById('jf-loc').value;
+  var dur=document.getElementById('jf-dur')?document.getElementById('jf-dur').value:'6 Months';
+  var salary=document.getElementById('jf-salary').value;
+  var desc=document.getElementById('jf-desc').value;
+  document.getElementById('jdp-title').textContent=title;
+  document.getElementById('jdp-type').textContent=type;
+  document.getElementById('jdp-loc').textContent=loc;
+  document.getElementById('jdp-desc').textContent=desc||'Fill in the job description in step 1 to see it here.';
+  document.getElementById('jdp-salary').textContent=salary+'/mo';
+  document.getElementById('jdp-salary2').textContent=salary+'/mo';
+  // chips
+  var chipsHTML='<span class="jd-chip hl">'+type+'</span><span class="jd-chip">'+loc+'</span><span class="jd-chip">'+dur+'</span>';
+  document.getElementById('jdp-chips').innerHTML=chipsHTML;
+}
+
+// ── BUILD REVIEW STEP ──
+function buildReview(){
+  var title=document.getElementById('jf-title').value||'Job Title';
+  var type=document.getElementById('jf-type').value;
+  var loc=document.getElementById('jf-loc').value;
+  var salary=document.getElementById('jf-salary').value;
+  var degrees=document.getElementById('jf-degreereq').value;
+  var gpa=document.getElementById('jf-gpa').value;
+  document.getElementById('review-title').textContent=title;
+  var chipsHTML='<span style="font-family:var(--mono);font-size:10px;padding:2px 8px;border:1px solid rgba(176,125,26,0.3);border-radius:3px;color:var(--gold);background:var(--goldf)">'+type+'</span>&nbsp;<span style="font-family:var(--mono);font-size:10px;padding:2px 8px;border:var(--b);border-radius:3px;color:var(--t3)">'+loc+'</span>&nbsp;<span style="font-family:var(--serif);font-size:15px;color:var(--gold)">'+salary+'/mo</span>';
+  document.getElementById('review-chips').innerHTML=chipsHTML;
+  document.getElementById('review-reqs').textContent=degrees+' · '+gpa+' GPA minimum';
+}
+
+// ── PUBLISH JOB ──
+function publishJob(){
+  var title=document.getElementById('jf-title').value;
+  if(!title){showToast('Please add a job title first');nav('post');pfgo(1);return;}
+  // Build full JD preview
+  liveUpdateJD();
+  var hours=document.getElementById('jf-hours').value;
+  var start=document.getElementById('jf-start').value;
+  var close=document.getElementById('jf-close').value;
+  var gpa=document.getElementById('jf-gpa').value;
+  var degrees=document.getElementById('jf-degreereq').value;
+  var year=document.getElementById('jf-year').value;
+  document.getElementById('jdp-hours').textContent=hours;
+  document.getElementById('jdp-start').textContent=start;
+  document.getElementById('jdp-close').textContent=close;
+  document.getElementById('jdp-gpa').textContent=gpa;
+  document.getElementById('jdp-degrees').textContent=degrees;
+  document.getElementById('jdp-year').textContent=year;
+  document.getElementById('jdp-dur').textContent=document.getElementById('jf-dur').value;
+  // Selected skills
+  var skillTags=document.querySelectorAll('#skill-picker .tp-t.on');
+  var skillHTML='';skillTags.forEach(function(t){skillHTML+='<span class="jd-skill">'+t.textContent+'</span>';});
+  document.getElementById('jdp-skills').innerHTML=skillHTML||'<span class="tsm">Not specified</span>';
+  // Benefits
+  var benTags=document.querySelectorAll('#benefits-picker .tp-t.on');
+  var benHTML='';benTags.forEach(function(t){benHTML+='<span class="jd-skill">'+t.textContent+'</span>';});
+  document.getElementById('jdp-benefits').innerHTML=benHTML||'<span class="tsm">Not specified</span>';
+  // Show preview button in sidebar and post page
+  document.getElementById('sb-jd-btn').style.display='flex';
+  document.getElementById('jd-preview-btn').style.display='inline-flex';
+  // Add to listings
+  addToListings(title);
+  showToast('Job listing published — now visible to 2,847 students');
+  setTimeout(function(){nav('jd-preview');},900);
+}
+
+function addToListings(title){
+  var type=document.getElementById('jf-type').value;
+  var loc=document.getElementById('jf-loc').value;
+  var sal=document.getElementById('jf-salary').value;
+  var html='<div class="jp"><div><div class="jp-ttl">'+title+'</div><div class="jp-mt">'+loc+' &middot; '+type+' &middot; '+sal+'/mo &middot; Just posted</div><div class="jp-chips"><span class="jp-chip live">Active</span><span class="jp-chip">'+type+'</span></div><div class="jp-acts"><button class="btn btn-out btn-sm">Edit</button><button class="btn btn-out btn-sm" onclick="nav('jd-preview')">Preview</button><button class="btn btn-red btn-sm">Close</button></div></div><div class="jp-stats"><div style="text-align:center"><div class="jp-sn">0</div><div class="jp-sl">Applicants</div></div><div style="text-align:center"><div class="jp-sn">0</div><div class="jp-sl">Views</div></div></div></div>';
+  document.getElementById('listings-container').insertAdjacentHTML('afterbegin',html);
+}
+
+// ── TOAST ──
+function showToast(msg){var t=document.getElementById('toast');document.getElementById('tmsg').textContent=msg;t.classList.add('on');setTimeout(function(){t.classList.remove('on');},3200);}
+</script>
+</body></html>
